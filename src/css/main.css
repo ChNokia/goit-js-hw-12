@@ -8,7 +8,6 @@
 
 .input-container {
     display: flex;
-    /* justify-content: center; */
     gap: 8px;
 }
 
@@ -46,11 +45,12 @@
     color: #808080;
 }
 
-.start-btn {
+.start-btn,
+.loading-btn {
     border: none;
     border-radius: 8px;
     padding: 8px 16px;
-    width: 75px;
+    min-width: 75px;
     height: 40px;
     background-color: #4e75ff;
     font-weight: 500;
@@ -63,14 +63,29 @@
 
 .start-btn:hover,
 .start-btn:focus,
-.start-btn:active {
+.start-btn:active,
+.loading-btn:hover,
+.loading-btn:focus,
+.loading-btn:active {
     background-color: #6c8cff;
 }
 
-.loading-container {
+.loading-btn-hide {
     display: none;
+}
+
+.loading-btn-show {
+    display: block;
+}
+
+.loading-container-show {
+    display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.loading-container-hide {
+    display: none;
 }
 
 .loading_text {
@@ -118,8 +133,10 @@
 }
 
 .gallery-item {
-    width: calc((100% - 24px*2)/3);
     position: relative;
+    width: 360px;
+    height: 200px;
+    overflow: hidden;
 }
 
 .gallery-image {

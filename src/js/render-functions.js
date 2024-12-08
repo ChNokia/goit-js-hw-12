@@ -3,8 +3,37 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-export function showToastError(message = "Error") {
+const loading = document.querySelector(".loading-container-hide");
+
+export function showLoading() {
+    loading.classList.replace("loading-container-hide", "loading-container-show");
+}
+
+export function hideLoading() {
+    loading.classList.replace("loading-container-show", "loading-container-hide");
+}
+
+export function showLoadMoreBtn(loadingMoreBtn) {
+  if (loadingMoreBtn) {
+    loadingMoreBtn.classList.replace("loading-btn-hide", "loading-btn-show");
+  }
+}
+
+export function hideLoadMoreBtn(loadingMoreBtn) {
+  if (loadingMoreBtn) {
+    loadingMoreBtn.classList.replace("loading-btn-show", "loading-btn-hide");
+  }
+}
+
+export function showErrorToast(message = "Error") {
     iziToast.error({
+        position: 'topRight',
+        message: message
+    });
+}
+
+export function showInfoToast(message = "Info") {
+    iziToast.info({
         position: 'topRight',
         message: message
     });
