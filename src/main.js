@@ -25,7 +25,7 @@ form.addEventListener("submit", handleSubmit);
 loadingMoreBtn.addEventListener("click", handleClick);
 
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
     event.preventDefault();
 
     searchText = event.target.elements.search.value.trim();
@@ -40,21 +40,21 @@ function handleSubmit(event) {
     fillInGallery([]);
     render.showLoading();
 
-    fetchData(currentPage, searchText)
-        .then(result => {
-            if (!result.hits.length) {
-                fillInGallery([]);
-                render.showErrorToast("Sorry, there are no images matching your search query. Please try again!");
-                return;
-            }
+    try {
+        const result = await fetchData(currentPage, searchText);
 
-            fillInGallery(result.hits);
-            chackIsLastPage((IMAGES_PER_PAGE * currentPage) >= Number(result.totalHits));
-        })
-        .catch(error => render.showErrorToast(error.message))
-        .finally(() => {
-            render.hideLoading();
-        })
+        if (!result.hits.length) {
+            fillInGallery([]);
+            throw new Error("Sorry, there are no images matching your search query. Please try again!");
+        }
+
+        fillInGallery(result.hits);
+        checkIsLastPage((IMAGES_PER_PAGE * currentPage) >= Number(result.totalHits));
+    } catch (error) {
+        render.showErrorToast(error.message)
+    } finally {
+        render.hideLoading();
+    }
     
     form.reset();
 }
@@ -69,7 +69,7 @@ async function handleClick(event) {
         const data = await fetchData(currentPage, searchText);
 
         addToGallery(data.hits);
-        chackIsLastPage((IMAGES_PER_PAGE * currentPage) >= Number(data.totalHits));
+        checkIsLastPage((IMAGES_PER_PAGE * currentPage) >= Number(data.totalHits));
 
         const galleryItem = document.querySelector(".gallery-item");
         const galleryItemHeight = galleryItem.getBoundingClientRect().height;
@@ -98,7 +98,7 @@ function addToGallery(array) {
     galleryLightbox.refresh();
 }
 
-function chackIsLastPage(isLastPage = false) {
+function checkIsLastPage(isLastPage = false) {
     if (isLastPage) {
         render.showInfoToast("We're sorry, but you've reached the end of search results.");
     } else {
