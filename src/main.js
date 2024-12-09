@@ -44,7 +44,6 @@ async function handleSubmit(event) {
         const result = await fetchData(currentPage, searchText);
 
         if (!result.hits.length) {
-            fillInGallery([]);
             throw new Error("Sorry, there are no images matching your search query. Please try again!");
         }
 
